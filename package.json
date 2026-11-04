@@ -1,0 +1,24 @@
+{
+  "name": "parksync",
+  "version": "1.0.0",
+  "description": "ParkSync — Intelligent Parking Reservation, Monitoring and Violation Management System",
+  "scripts": {
+    "start:backend": "npm --prefix backend start",
+    "start:frontend": "npm --prefix frontend dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "check-db": "npm --prefix backend run check-db"
+  },
+  "keywords": [
+    "dbms-mini-project",
+    "fullstack",
+    "mysql",
+    "mongodb",
+    "react",
+    "express"
+  ],
+  "author": "Vikas N Naik & Yashash C",
+  "license": "ISC"
+}
+
