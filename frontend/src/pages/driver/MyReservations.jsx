@@ -18,6 +18,11 @@ import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL View statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_RESERVATION_VIEW_SQL = EMBEDDED_QUERIES.RESERVATION_DETAILS_VIEW.sql;
 
 export const MyReservations = () => {
   const { user } = useAuth();
@@ -185,7 +190,10 @@ export const MyReservations = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">My Reservations</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">My Reservations</h2>
+            <EmbeddedSqlBadge queryKey="RESERVATION_DETAILS_VIEW" />
+          </div>
           <p className="text-sm text-gray-500 mt-1">
             Track and manage your upcoming bookings, history, and payment statuses.
           </p>

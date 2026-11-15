@@ -12,7 +12,8 @@ import {
   Layers,
   Activity,
   LogOut,
-  Car
+  Car,
+  Database
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -46,6 +47,7 @@ export const Sidebar = ({
     { to: '/driver/payments', label: 'Payments', icon: CreditCard },
     { to: '/driver/violations', label: 'Violations & Fines', icon: AlertOctagon },
     { to: '/driver/notifications', label: 'Notifications', icon: Bell },
+    { to: '/driver/sql-showcase', label: 'Embedded SQL (Viva)', icon: Database },
   ];
 
   const adminLinks = [
@@ -57,6 +59,7 @@ export const Sidebar = ({
     { to: '/admin/payments', label: 'Payment Records', icon: CreditCard },
     { to: '/admin/violations', label: 'Violations & Fines', icon: AlertOctagon },
     { to: '/admin/activity-logs', label: 'Activity Logs (NoSQL)', icon: Activity },
+    { to: '/admin/sql-showcase', label: 'Embedded SQL (Viva)', icon: Database },
   ];
 
   const links = isAdmin ? adminLinks : driverLinks;

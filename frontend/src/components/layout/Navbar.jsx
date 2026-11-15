@@ -66,17 +66,19 @@ export const Navbar = ({ onToggleSidebar, isCollapsed = false }) => {
       <div className="flex items-center gap-3 lg:gap-4">
         {/* Database Status Badges for DBMS Viva */}
         <div className="hidden sm:flex items-center gap-2">
-          <div
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+          <Link
+            to={isAdmin ? '/admin/sql-showcase' : '/driver/sql-showcase'}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border transition hover:opacity-90 cursor-pointer ${
               health.mysql === 'connected'
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-300'
                 : 'bg-rose-50 text-rose-700 border-rose-200'
             }`}
-            title="MySQL 8.0 Relational Storage"
+            title="Click to view Live Embedded SQL Statements & Schema"
           >
             <Database className="w-3 h-3" />
             <span>MySQL: {health.mysql}</span>
-          </div>
+            <span className="text-[10px] px-1 rounded bg-emerald-200/50 font-mono text-emerald-800">SQL</span>
+          </Link>
 
           <div
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${

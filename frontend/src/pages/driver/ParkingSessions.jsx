@@ -5,6 +5,11 @@ import Badge from '../../components/common/Badge';
 import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL Join statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_SESSION_JOIN_SQL = EMBEDDED_QUERIES.PARKING_SESSIONS_JOIN.sql;
 
 export const ParkingSessions = () => {
   const [sessions, setSessions] = useState([]);
@@ -29,11 +34,16 @@ export const ParkingSessions = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Parking Session History</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Detailed check-in, check-out, and active parking duration records.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Parking Session History</h2>
+            <EmbeddedSqlBadge queryKey="PARKING_SESSIONS_JOIN" />
+          </div>
+          <p className="text-sm text-gray-500 mt-1">
+            Detailed check-in, check-out, and active parking duration records.
+          </p>
+        </div>
       </div>
 
       {sessions.length === 0 ? (

@@ -20,6 +20,9 @@ import Payments from './pages/driver/Payments';
 import Violations from './pages/driver/Violations';
 import Notifications from './pages/driver/Notifications';
 
+// Academic DBMS Showcase Page
+import DbmsSqlShowcase from './pages/common/DbmsSqlShowcase';
+
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AreasManagement from './pages/admin/AreasManagement';
@@ -93,6 +96,7 @@ function App() {
             <Route path="payments" element={<Payments />} />
             <Route path="violations" element={<Violations />} />
             <Route path="notifications" element={<Notifications />} />
+            <Route path="sql-showcase" element={<DbmsSqlShowcase />} />
           </Route>
 
           {/* Admin Protected Routes */}
@@ -113,6 +117,7 @@ function App() {
             <Route path="payments" element={<PaymentsManagement />} />
             <Route path="violations" element={<ViolationsManagement />} />
             <Route path="activity-logs" element={<ActivityLogs />} />
+            <Route path="sql-showcase" element={<DbmsSqlShowcase />} />
           </Route>
 
           {/* 404 Catch All */}

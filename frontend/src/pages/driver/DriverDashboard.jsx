@@ -20,6 +20,12 @@ import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL Aggregates statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_STATS_SQL = EMBEDDED_QUERIES.DRIVER_DASHBOARD_AGGREGATES.sql;
+const EMBEDDED_VEHICLE_INSERT_SQL = EMBEDDED_QUERIES.VEHICLE_INSERT_DML.sql;
 
 export const DriverDashboard = () => {
   const { user } = useAuth();
@@ -162,6 +168,10 @@ export const DriverDashboard = () => {
       )}
 
       {/* Summary KPI Cards */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-base font-bold text-gray-800">Driver Activity Summary</h3>
+        <EmbeddedSqlBadge queryKey="DRIVER_DASHBOARD_AGGREGATES" label="Embedded Aggregate SQL" />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="My Registered Vehicles"
@@ -268,10 +278,13 @@ export const DriverDashboard = () => {
         {/* Right: My Vehicles (1 Col) */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Car className="w-5 h-5 text-teal-600" />
-              My Vehicles
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <Car className="w-5 h-5 text-teal-600" />
+                My Vehicles
+              </h3>
+              <EmbeddedSqlBadge queryKey="VEHICLE_INSERT_DML" label="INSERT DML" size="xs" />
+            </div>
             <button
               onClick={() => setShowAddVehicle(true)}
               className="px-3 py-1.5 text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition shadow-xs flex items-center gap-1"

@@ -8,6 +8,11 @@ import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL Join statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_PAYMENT_JOIN_SQL = EMBEDDED_QUERIES.PAYMENT_HISTORY_JOIN.sql;
 
 export const Payments = () => {
   const { user } = useAuth();
@@ -154,7 +159,10 @@ export const Payments = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Payments & Receipts</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Payments & Receipts</h2>
+            <EmbeddedSqlBadge queryKey="PAYMENT_HISTORY_JOIN" />
+          </div>
           <p className="text-sm text-gray-500 mt-1">
             Complete parking reservations using Razorpay Test Mode or review past transactions.
           </p>

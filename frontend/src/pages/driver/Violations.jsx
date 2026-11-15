@@ -6,6 +6,11 @@ import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL Lookup statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_VIOLATIONS_SQL = EMBEDDED_QUERIES.VIOLATION_VEHICLE_LOCATION_LOOKUP.sql;
 
 export const Violations = () => {
   const [violations, setViolations] = useState([]);
@@ -47,11 +52,16 @@ export const Violations = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Violations & Fines</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Review any parking infractions issued to your registered vehicles.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Violations & Fines</h2>
+            <EmbeddedSqlBadge queryKey="VIOLATION_VEHICLE_LOCATION_LOOKUP" />
+          </div>
+          <p className="text-sm text-gray-500 mt-1">
+            Review any parking infractions issued to your registered vehicles.
+          </p>
+        </div>
       </div>
 
       {violations.length === 0 ? (

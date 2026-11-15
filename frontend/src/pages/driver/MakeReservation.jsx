@@ -17,6 +17,11 @@ import { launchRazorpayCheckout } from '../../utils/razorpay';
 import { formatINR } from '../../utils/formatters';
 import Loader from '../../components/common/Loader';
 import Badge from '../../components/common/Badge';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded ACID Transaction SQL statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_RESERVATION_TX_SQL = EMBEDDED_QUERIES.RESERVATION_ACID_TRANSACTION.sql;
 
 export const MakeReservation = () => {
   const [searchParams] = useSearchParams();
@@ -209,7 +214,10 @@ export const MakeReservation = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Reserve a Parking Slot</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Reserve a Parking Slot</h2>
+          <EmbeddedSqlBadge queryKey="RESERVATION_ACID_TRANSACTION" />
+        </div>
         <p className="text-sm text-gray-500 mt-1">
           Select your parking hub, time window, and registered vehicle.
         </p>

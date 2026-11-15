@@ -20,6 +20,11 @@ import StatCard from '../../components/common/StatCard';
 import Badge from '../../components/common/Badge';
 import Loader from '../../components/common/Loader';
 import { formatINR } from '../../utils/formatters';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL Aggregates statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_ADMIN_KPI_SQL = EMBEDDED_QUERIES.ADMIN_KPI_AGGREGATES.sql;
 
 export const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -62,7 +67,10 @@ export const AdminDashboard = () => {
           <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">
             Executive Control Center
           </span>
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight">Admin Master Dashboard</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-black text-gray-900 tracking-tight">Admin Master Dashboard</h2>
+            <EmbeddedSqlBadge queryKey="ADMIN_KPI_AGGREGATES" label="Admin Aggregates SQL" />
+          </div>
           <p className="text-xs text-gray-500 mt-0.5">
             Real-time analytics across parking infrastructure, financial transactions, and MongoDB audit trails.
           </p>

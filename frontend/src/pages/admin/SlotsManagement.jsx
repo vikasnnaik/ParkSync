@@ -5,6 +5,11 @@ import Badge from '../../components/common/Badge';
 import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 import ConfirmModal from '../../components/common/ConfirmModal';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded DDL Schema statement incorporated directly for academic DBMS evaluation:
+const EMBEDDED_SLOT_DDL = EMBEDDED_QUERIES.SCHEMA_PARKING_SLOTS_DDL.sql;
 
 export const SlotsManagement = () => {
   const [slots, setSlots] = useState([]);
@@ -115,7 +120,10 @@ export const SlotsManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Manage Parking Slots</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Manage Parking Slots</h2>
+            <EmbeddedSqlBadge queryKey="SCHEMA_PARKING_SLOTS_DDL" label="Slots DDL & Constraints" />
+          </div>
           <p className="text-sm text-gray-500 mt-1">
             Configure bays, assign designated vehicle types, floor levels, and maintenance statuses.
           </p>

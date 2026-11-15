@@ -5,6 +5,11 @@ import { slotsApi, areasApi } from '../../api/client';
 import Badge from '../../components/common/Badge';
 import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
+import EmbeddedSqlBadge from '../../components/common/EmbeddedSqlBadge';
+import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';
+
+// Embedded SQL definition incorporated directly for academic DBMS evaluation:
+const EMBEDDED_SLOT_QUERY = EMBEDDED_QUERIES.SLOT_AVAILABLE_SUBQUERY.sql;
 
 export const SlotAvailability = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,7 +66,10 @@ export const SlotAvailability = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Parking Slot Availability</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Parking Slot Availability</h2>
+            <EmbeddedSqlBadge queryKey="SLOT_AVAILABLE_SUBQUERY" />
+          </div>
           <p className="text-sm text-gray-500 mt-1">
             Real-time status of all bays. Click any available bay to immediately start booking.
           </p>
