@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
-export const MainLayout = () => {
+export const MainLayout = ({ children }) => {
   // Mobile drawer state
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Desktop collapsed state (persists in localStorage)
-  const [isCollapsed, setIsCollapsed] = useState(() => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
     try {
-      return localStorage.getItem('parksync_sidebar_collapsed') === 'true';
+      const saved = localStorage.getItem('parksync_sidebar_collapsed');
+      if (saved === 'true') setIsCollapsed(true);
     } catch {
-      return false;
+      // ignore
     }
-  });
+  }, []);
 
   const handleToggleSidebar = () => {
-    if (window.innerWidth < 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
       setMobileOpen((prev) => !prev);
     } else {
       setIsCollapsed((prev) => {
@@ -55,7 +59,7 @@ export const MainLayout = () => {
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>
@@ -63,4 +67,3 @@ export const MainLayout = () => {
 };
 
 export default MainLayout;
-

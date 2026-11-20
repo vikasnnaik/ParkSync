@@ -1,24 +1,16 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Menu, Bell, Database, CheckCircle2, AlertCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Menu, Bell } from 'lucide-react';
+import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import { systemApi, notificationsApi } from '../../api/client';
+import { notificationsApi } from '../../api/client';
 
 export const Navbar = ({ onToggleSidebar, isCollapsed = false }) => {
   const { user, isAdmin } = useAuth();
-  const [health, setHealth] = useState({ mysql: 'connected', mongodb: 'connected' });
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    const checkSystem = async () => {
-      try {
-        const res = await systemApi.getHealth();
-        setHealth({ mysql: res.mysql, mongodb: res.mongodb });
-      } catch {
-        setHealth({ mysql: 'disconnected', mongodb: 'disconnected' });
-      }
-    };
-
     const fetchNotifications = async () => {
       if (!isAdmin) {
         try {
@@ -33,11 +25,7 @@ export const Navbar = ({ onToggleSidebar, isCollapsed = false }) => {
       }
     };
 
-    checkSystem();
     fetchNotifications();
-
-    const interval = setInterval(checkSystem, 30000);
-    return () => clearInterval(interval);
   }, [isAdmin]);
 
   return (
@@ -64,39 +52,10 @@ export const Navbar = ({ onToggleSidebar, isCollapsed = false }) => {
       </div>
 
       <div className="flex items-center gap-3 lg:gap-4">
-        {/* Database Status Badges for DBMS Viva */}
-        <div className="hidden sm:flex items-center gap-2">
-          <Link
-            to={isAdmin ? '/admin/sql-showcase' : '/driver/sql-showcase'}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border transition hover:opacity-90 cursor-pointer ${
-              health.mysql === 'connected'
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-300'
-                : 'bg-rose-50 text-rose-700 border-rose-200'
-            }`}
-            title="Click to view Live Embedded SQL Statements & Schema"
-          >
-            <Database className="w-3 h-3" />
-            <span>MySQL: {health.mysql}</span>
-            <span className="text-[10px] px-1 rounded bg-emerald-200/50 font-mono text-emerald-800">SQL</span>
-          </Link>
-
-          <div
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
-              health.mongodb === 'connected'
-                ? 'bg-teal-50 text-teal-700 border-teal-200'
-                : 'bg-amber-50 text-amber-700 border-amber-200'
-            }`}
-            title="MongoDB NoSQL Activity Logs"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
-            <span>Mongo NoSQL: {health.mongodb}</span>
-          </div>
-        </div>
-
         {/* Notifications Icon (For Drivers) */}
         {!isAdmin && (
           <Link
-            to="/driver/notifications"
+            href="/driver/notifications"
             className="relative p-2 text-gray-500 hover:text-teal-600 rounded-lg hover:bg-gray-100 transition"
             title="Notifications"
           >

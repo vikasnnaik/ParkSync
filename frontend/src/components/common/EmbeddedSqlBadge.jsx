@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Database, Code } from 'lucide-react';
 import { EMBEDDED_QUERIES } from '../../db/embeddedQueries';

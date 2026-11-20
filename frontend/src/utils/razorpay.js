@@ -32,7 +32,10 @@ export const launchRazorpayCheckout = async ({
   }
 
   const options = {
-    key: orderData.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID,
+    key:
+      orderData.keyId ||
+      (typeof process !== 'undefined' && process.env && (process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID)) ||
+      'rzp_test_TviqPqgjtmOobl',
     amount: orderData.amount, // in paise
     currency: orderData.currency || 'INR',
     name: 'ParkSync Intelligent Parking',

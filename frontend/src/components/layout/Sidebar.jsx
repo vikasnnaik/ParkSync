@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   MapPin,
@@ -12,8 +15,7 @@ import {
   Layers,
   Activity,
   LogOut,
-  Car,
-  Database
+  Car
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -25,11 +27,12 @@ export const Sidebar = ({
   isCollapsed = false
 }) => {
   const { user, logout, isAdmin } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    router.push('/login');
   };
 
   const handleLinkClick = () => {
@@ -47,7 +50,6 @@ export const Sidebar = ({
     { to: '/driver/payments', label: 'Payments', icon: CreditCard },
     { to: '/driver/violations', label: 'Violations & Fines', icon: AlertOctagon },
     { to: '/driver/notifications', label: 'Notifications', icon: Bell },
-    { to: '/driver/sql-showcase', label: 'Embedded SQL (Viva)', icon: Database },
   ];
 
   const adminLinks = [
@@ -58,8 +60,7 @@ export const Sidebar = ({
     { to: '/admin/sessions', label: 'Parking Sessions', icon: History },
     { to: '/admin/payments', label: 'Payment Records', icon: CreditCard },
     { to: '/admin/violations', label: 'Violations & Fines', icon: AlertOctagon },
-    { to: '/admin/activity-logs', label: 'Activity Logs (NoSQL)', icon: Activity },
-    { to: '/admin/sql-showcase', label: 'Embedded SQL (Viva)', icon: Database },
+    { to: '/admin/activity-logs', label: 'Activity Logs', icon: Activity },
   ];
 
   const links = isAdmin ? adminLinks : driverLinks;
@@ -127,22 +128,21 @@ export const Sidebar = ({
 
           {links.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.to;
             return (
-              <NavLink
+              <Link
                 key={item.to}
-                to={item.to}
+                href={item.to}
                 onClick={handleLinkClick}
-                className={({ isActive }) =>
-                  `flex items-center rounded-xl text-sm font-medium transition-all duration-150 group relative ${
-                    isCollapsed
-                      ? 'gap-3 px-3.5 py-2.5 lg:gap-0 lg:justify-center lg:p-3'
-                      : 'gap-3 px-3.5 py-2.5'
-                  } ${
-                    isActive
-                      ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30 shadow-sm'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`
-                }
+                className={`flex items-center rounded-xl text-sm font-medium transition-all duration-150 group relative ${
+                  isCollapsed
+                    ? 'gap-3 px-3.5 py-2.5 lg:gap-0 lg:justify-center lg:p-3'
+                    : 'gap-3 px-3.5 py-2.5'
+                } ${
+                  isActive
+                    ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30 shadow-sm'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
+                }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />
                 <span className={`truncate whitespace-nowrap ${isCollapsed ? 'lg:hidden' : ''}`}>
@@ -155,7 +155,7 @@ export const Sidebar = ({
                     {item.label}
                   </span>
                 )}
-              </NavLink>
+              </Link>
             );
           })}
         </div>

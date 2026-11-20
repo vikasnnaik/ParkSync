@@ -1,16 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabasePublishableKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
+const getEnvVar = (key) => {
+  if (typeof process !== 'undefined' && process.env) {
+    if (process.env[`NEXT_PUBLIC_${key}`]) return process.env[`NEXT_PUBLIC_${key}`];
+    if (process.env[`VITE_${key}`]) return process.env[`VITE_${key}`];
+  }
+  return '';
+};
 
-if (!supabaseUrl || !supabasePublishableKey) {
-  console.warn('Supabase URL or Publishable/Anon Key is not configured in frontend/.env');
-}
+const supabaseUrl =
+  getEnvVar('SUPABASE_URL') ||
+  'https://mzxzhqichpyrknhvobcd.supabase.co';
+
+const supabasePublishableKey =
+  getEnvVar('SUPABASE_PUBLISHABLE_KEY') ||
+  getEnvVar('SUPABASE_ANON_KEY') ||
+  'sb_publishable_Amde4sXXAkfxuLTTrTfxLw_ix2pGQy1';
 
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabasePublishableKey || 'placeholder',
+  supabaseUrl,
+  supabasePublishableKey,
   {
     auth: {
       persistSession: true,
@@ -19,4 +28,3 @@ export const supabase = createClient(
     },
   }
 );
-

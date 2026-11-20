@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const getApiBaseUrl = () => {
-  const configured = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const configured =
+    (typeof process !== 'undefined' && process.env && (process.env.NEXT_PUBLIC_API_URL || process.env.VITE_API_URL)) ||
+    'http://localhost:5000/api';
   if (typeof window !== 'undefined' && window.location.hostname === '127.0.0.1' && configured.includes('localhost')) {
     return configured.replace('localhost', '127.0.0.1');
   }
@@ -19,7 +21,7 @@ const client = axios.create({
 // Request interceptor: Attach JWT token only if caller hasn't explicitly provided one
 client.interceptors.request.use(
   (config) => {
-    if (!config.headers.Authorization) {
+    if (!config.headers.Authorization && typeof window !== 'undefined') {
       const token = localStorage.getItem('parksync_token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -45,7 +47,7 @@ client.interceptors.response.use(
       message = 'An unexpected network error occurred';
     }
 
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && typeof window !== 'undefined') {
       // Clear token if expired or invalid, but do not interrupt auth flow pages
       if (
         window.location.pathname !== '/login' &&

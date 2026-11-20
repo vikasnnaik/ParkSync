@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Database, X, Copy, Check, Terminal, Layers, Info } from 'lucide-react';
 

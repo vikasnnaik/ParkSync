@@ -10,6 +10,8 @@ backend/.env.*
 !backend/.env.example
 dist/
 dist-ssr/
+.next/
+frontend/.next/
 *.local
 npm-debug.log*
 yarn-debug.log*

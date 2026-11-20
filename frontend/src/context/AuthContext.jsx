@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authApi } from '../api/client';
 import { supabase } from '../lib/supabase';
@@ -5,36 +7,54 @@ import { supabase } from '../lib/supabase';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('parksync_user');
-      return savedUser ? JSON.parse(savedUser) : null;
-    } catch {
-      return null;
-    }
-  });
-  const [token, setToken] = useState(() => localStorage.getItem('parksync_token') || null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Initialize from localStorage on client mount
   useEffect(() => {
-    const verifyUser = async () => {
-      if (token) {
-        try {
-          const res = await authApi.getProfile();
-          if (res.success && res.user) {
-            setUser(res.user);
-            localStorage.setItem('parksync_user', JSON.stringify(res.user));
+    const initAuth = async () => {
+      try {
+        const savedToken = typeof window !== 'undefined' ? localStorage.getItem('parksync_token') : null;
+        const savedUser = typeof window !== 'undefined' ? localStorage.getItem('parksync_user') : null;
+
+        if (savedToken) {
+          setToken(savedToken);
+          if (savedUser) {
+            try {
+              setUser(JSON.parse(savedUser));
+            } catch {
+              // ignore json parse error
+            }
           }
-        } catch (error) {
-          console.warn('Profile fetch failed, resetting auth session');
-          logout();
+
+          try {
+            const res = await authApi.getProfile();
+            if (res.success && res.user) {
+              setUser(res.user);
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('parksync_user', JSON.stringify(res.user));
+              }
+            }
+          } catch (error) {
+            console.warn('Profile fetch failed, clearing stale auth session');
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('parksync_token');
+              localStorage.removeItem('parksync_user');
+            }
+            setUser(null);
+            setToken(null);
+          }
         }
+      } catch (err) {
+        console.error('Auth initialization error:', err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    verifyUser();
-  }, [token]);
+    initAuth();
+  }, []);
 
   /**
    * Unified Login:
